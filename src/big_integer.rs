@@ -1,4 +1,4 @@
-use std::ops::Add;
+use std::ops::{Add, Mul};
 
 #[derive(Debug)]
 pub struct BigInteger {
@@ -63,6 +63,31 @@ impl Add for BigInteger {
 
         if carry != 0 {
             result.values.push(carry);
+        }
+
+        result
+    }
+}
+
+impl Mul for BigInteger {
+    type Output = Self;
+
+    fn mul(self, other: Self) -> Self {
+        let mut result = Self::new();
+
+        for (i, a) in self.values.iter().enumerate() {
+            for (j, b) in other.values.iter().enumerate() {
+                let product: u128 = *a as u128 * *b as u128;
+                let high: u64 = (product >> 64) as u64;
+                let low: u64 = product as u64;
+
+                let mut result_fragment = vec![0; i + j];
+                result_fragment.push(low);
+                if high != 0 {
+                    result_fragment.push(high);
+                }
+                result = result + BigInteger::from_vec(result_fragment);
+            }
         }
 
         result
