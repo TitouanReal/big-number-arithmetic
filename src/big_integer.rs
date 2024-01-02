@@ -1,6 +1,6 @@
 use std::ops::{Add, Mul};
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub struct BigInteger {
     values: Vec<u64>,
 }
@@ -15,6 +15,23 @@ impl BigInteger {
             values.pop();
         }
         BigInteger { values: values }
+    }
+
+    pub fn pow(self, other: Self) -> Self {
+        let mut result = BigInteger::from_vec(vec![1]);
+
+        for (i, digit) in other.values.iter().enumerate() {
+            let mut fragment_values = vec![0; i];
+            fragment_values.push(1);
+            let mut fragment = BigInteger::from_vec(fragment_values);
+            for _ in 0..*digit {
+                fragment = fragment * self.clone();
+            }
+
+            result = result * fragment;
+        }
+
+        result
     }
 }
 
