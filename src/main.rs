@@ -23,4 +23,8 @@ fn main() {
     let k = BigInteger::new();
     let l = BigInteger::new();
     println!("{:?}", k.pow(l));
+
+    let m = BigInteger::from_vec(vec![0, 1, 1]);
+    let n = BigInteger::from_vec(vec![0, 5]);
+    println!("{:?}", m - n);
 }

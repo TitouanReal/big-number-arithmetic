@@ -1,4 +1,4 @@
-use std::ops::{Add, Mul};
+use std::ops::{Add, Mul, Sub};
 
 #[derive(Debug, Clone)]
 pub struct BigInteger {
@@ -83,6 +83,56 @@ impl Add for BigInteger {
         }
 
         result
+    }
+}
+
+impl Sub for BigInteger {
+    type Output = Self;
+
+    fn sub(self, other: Self) -> Self {
+        let self_len = self.values.len();
+        let other_len = other.values.len();
+        if self_len < other_len {
+            panic!("Overflow occurred during substraction");
+        }
+
+        let mut signed_result: Vec<i128> = vec![];
+
+        for (i, value) in other.values.iter().enumerate() {
+            signed_result.push(i128::from(self.values[i].clone()) - i128::from(value.clone()));
+        }
+        for i in other_len..self_len {
+            signed_result.push(i128::from(self.values[i]));
+        }
+
+        let mut stop = true;
+        loop {
+            for value in signed_result.iter() {
+                if value < &0 {
+                    stop = false;
+                }
+            }
+            if stop {
+                break;
+            }
+            for i in 0..signed_result.len() {
+                if signed_result[i] < 0 {
+                    if i + 1 == signed_result.len() {
+                        panic!("Overflow occurred during substraction");
+                    }
+                    signed_result[i] = signed_result[i] + i128::from(std::u64::MAX) + 1;
+                    signed_result[i + 1] = signed_result[i + 1] - 1;
+                }
+            }
+            stop = true;
+        }
+
+        let mut result: Vec<u64> = vec![];
+        for value in signed_result.iter() {
+            result.push(u64::try_from(value.clone()).unwrap());
+        }
+
+        return Self::from_vec(result);
     }
 }
 
