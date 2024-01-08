@@ -36,4 +36,9 @@ fn main() {
     let r = BigInteger::from_vec(vec![3, 1]);
     let s = BigInteger::from_vec(vec![1_591_181_525_541]);
     println!("{:?}", q.mod_mul(r, s));
+
+    let t = BigInteger::from_vec(vec![5, 6, 15]);
+    let u = BigInteger::from_vec(vec![3, 1]);
+    let v = BigInteger::from_vec(vec![1_591_181_525_541]);
+    println!("mod pow {:?}", t.mod_pow(u, v));
 }

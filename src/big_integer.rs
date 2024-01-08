@@ -56,6 +56,24 @@ impl BigInteger {
 
         result
     }
+
+    pub fn mod_pow(self, other: Self, modulus: Self) -> Self {
+        let mut result = BigInteger::from_vec(vec![1]);
+
+        for (i, digit) in other.values.iter().enumerate() {
+            let mut fragment_values = vec![0; i];
+            fragment_values.push(1);
+            let mut fragment = BigInteger::from_vec(fragment_values);
+            for _ in 0..*digit {
+                fragment = (fragment % modulus.clone()) * (self.clone() % modulus.clone())
+                    % modulus.clone();
+            }
+
+            result = result * fragment % modulus.clone();
+        }
+
+        result
+    }
 }
 
 impl Add for BigInteger {
