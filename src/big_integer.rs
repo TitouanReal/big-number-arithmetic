@@ -1,6 +1,7 @@
-use std::ops::{Add, Mul, Sub};
+use std::cmp::{Ordering, PartialEq, PartialOrd};
+use std::ops::{Add, Mul, Rem, Sub};
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, PartialEq)]
 pub struct BigInteger {
     values: Vec<u64>,
 }
@@ -155,6 +156,53 @@ impl Mul for BigInteger {
                 }
                 result = result + BigInteger::from_vec(result_fragment);
             }
+        }
+
+        result
+    }
+}
+
+impl PartialOrd for BigInteger {
+    fn partial_cmp(&self, other: &BigInteger) -> Option<Ordering> {
+        let self_len = self.values.len();
+        let other_len = other.values.len();
+
+        if self_len == other_len {
+            if self_len == 0 {
+                return Some(std::cmp::Ordering::Equal);
+            }
+            if self.values[self_len - 1] > other.values[other_len - 1] {
+                return Some(std::cmp::Ordering::Greater);
+            }
+            if self.values[self_len - 1] < other.values[other_len - 1] {
+                return Some(std::cmp::Ordering::Less);
+            }
+            if self.values[self_len - 1] == other.values[other_len - 1] {
+                let mut self_reduced_values = self.clone().values;
+                let mut other_reduced_values = other.clone().values;
+                self_reduced_values.pop();
+                other_reduced_values.pop();
+                let self_reduced = BigInteger::from_vec(self_reduced_values);
+                let other_reduced = BigInteger::from_vec(other_reduced_values);
+                return self_reduced.partial_cmp(&other_reduced);
+            }
+        }
+
+        if self_len > other_len {
+            return Some(std::cmp::Ordering::Greater);
+        }
+
+        return Some(std::cmp::Ordering::Less);
+    }
+}
+
+impl Rem for BigInteger {
+    type Output = Self;
+
+    fn rem(self, other: Self) -> Self {
+        let mut result = self;
+        while result >= other.clone() {
+            result = result - other.clone();
         }
 
         result

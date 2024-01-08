@@ -27,4 +27,8 @@ fn main() {
     let m = BigInteger::from_vec(vec![0, 1, 1]);
     let n = BigInteger::from_vec(vec![0, 5]);
     println!("{:?}", m - n);
+
+    let o = BigInteger::from_vec(vec![0, 1]);
+    let p = BigInteger::from_vec(vec![16_000_000_000_000_000_000]);
+    println!("{:?}", o % p);
 }
