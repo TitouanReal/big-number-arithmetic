@@ -31,4 +31,9 @@ fn main() {
     let o = BigInteger::from_vec(vec![0, 1]);
     let p = BigInteger::from_vec(vec![16_000_000_000_000_000_000]);
     println!("{:?}", o % p);
+
+    let q = BigInteger::from_vec(vec![5, 6, 15]);
+    let r = BigInteger::from_vec(vec![3, 1]);
+    let s = BigInteger::from_vec(vec![1_591_181_525_541]);
+    println!("{:?}", q.mod_mul(r, s));
 }

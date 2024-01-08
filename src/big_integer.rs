@@ -18,6 +18,28 @@ impl BigInteger {
         BigInteger { values: values }
     }
 
+    pub fn mod_mul(self, other: Self, modulus: Self) -> Self {
+        let mut result = Self::new();
+
+        for (i, a) in self.values.iter().enumerate() {
+            for (j, b) in other.values.iter().enumerate() {
+                let product: u128 = *a as u128 * *b as u128;
+                let high: u64 = (product >> 64) as u64;
+                let low: u64 = product as u64;
+
+                let mut result_fragment = vec![0; i + j];
+                result_fragment.push(low);
+                if high != 0 {
+                    result_fragment.push(high);
+                }
+                result = (result + BigInteger::from_vec(result_fragment) % modulus.clone())
+                    % modulus.clone();
+            }
+        }
+
+        result
+    }
+
     pub fn pow(self, other: Self) -> Self {
         let mut result = BigInteger::from_vec(vec![1]);
 
