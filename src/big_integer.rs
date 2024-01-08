@@ -201,8 +201,16 @@ impl Rem for BigInteger {
 
     fn rem(self, other: Self) -> Self {
         let mut result = self;
-        while result >= other.clone() {
-            result = result - other.clone();
+        let mut multiple = other.clone();
+        let mut list: Vec<BigInteger> = vec![];
+        while multiple < result {
+            list.push(multiple.clone());
+            multiple = multiple * Self::from_vec(vec![2]);
+        }
+        for multiple in list.iter().rev() {
+            while multiple.clone() <= result.clone() {
+                result = result - multiple.clone();
+            }
         }
 
         result
