@@ -17,9 +17,10 @@ fn main() {
     let g = BigInteger::from_vec(vec![2, 7, 9]);
     let h = BigInteger::from_vec(vec![5]);
     println!("pow a {:?}", g.pow(h));
-    let i = BigInteger::from_vec(vec![2]);
-    let j = BigInteger::from_vec(vec![0, 1]);
-    println!("pow b {:?}", i.pow(j));
+    // Too slow
+    // let i = BigInteger::from_vec(vec![2]);
+    // let j = BigInteger::from_vec(vec![0, 1]);
+    // println!("pow b {:?}", i.pow(j));
     let k = BigInteger::new();
     let l = BigInteger::new();
     println!("pow c {:?}", k.pow(l));
@@ -37,8 +38,9 @@ fn main() {
     let s = BigInteger::from_vec(vec![1_591_181_525_541]);
     println!("mod mul {:?}", q.mod_mul(r, s));
 
-    let t = BigInteger::from_vec(vec![5, 6, 15]);
-    let u = BigInteger::from_vec(vec![3, 1]);
-    let v = BigInteger::from_vec(vec![1_591_181_525_541]);
-    println!("mod pow {:?}", t.mod_pow(u, v));
+    // Too slow
+    // let t = BigInteger::from_vec(vec![5, 6, 15]);
+    // let u = BigInteger::from_vec(vec![3, 1]);
+    // let v = BigInteger::from_vec(vec![1_591_181_525_541]);
+    // println!("mod pow {:?}", t.mod_pow(u, v));
 }
